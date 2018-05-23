@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="adding.css">
+    <meta charset="utf-8"/>
+    <title>Briggs' Brain Builders</title>
+    
+</head>
+<body>
+    <header><h1>Learning to add numbers</h1></header>
+    <div id="TheGame">
+    <div id="Question">
+    <p id="first"></p><p id="operator"></p><p id="second"></p><p> = </p><input id="answer" type="text" onkeydown="enter(event)"><button type="button"  onclick="checkAnswer()">Submit</button>
+    </div>
+    <p id="verdict">Answer the question and then press 'ENTER' or click 'Submit'</p>
+    <div id="Score" class="inline">
+    <p>Score: </p><p id="score"></p>
+    </div>
+    </div>
+    <div id="modifiers">
+        <div class="inline"><p>The setting is:</p><p id="setting">EASY</p></div>
+        <div class="inline"><button type="button"  onclick="easy()">EASY</button><p>Single Digit Numbers</p></div>
+        <div class="inline"><button type="button"  onclick="medium()">MEDIUM</button><p>Total Less than 100</p></div>
+        <div class="inline"><button type="button"  onclick="hard()">HARD</button><p>Two Digit Numbers</p></div>
+        <div class="inline"><button type="button"  onclick="extreme()">EXTREME</button><p>Three Digit Numbers</p></div>
+    </div>
+    <div id="operation">
+        <div class="inline"><p>The questions will be:</p><p id="setting"></p></div>
+        <div class="inline"><p>Addition</p><input type="checkbox" id="addition"></div>
+        <div class="inline"><p>Subtraction</p><input type="checkbox" id="subtraction"></div>
+        <div class="inline"><p>Multiplication</p><input type="checkbox" id="multiplication"></div>
+    </div>
+    
+    
+    <script src="adding.js"></script>
+</body>
+</html>
