@@ -8,7 +8,7 @@ var b = getRndInteger(1,9);
 var score = 0;
 var correct = new Audio('correct.wav');
 var wrong = new Audio('wrong.wav');
-var operator = 2;
+var operator = 2; //determines whether it will be addition or subtraction - 1 is addition, 2 is subtraction.
 
 function PrintQuestion() {
     document.getElementById("first").innerHTML = a;
@@ -26,6 +26,8 @@ function PrintQuestion() {
 }
  
 /* 
+I want this to use the check boxes to determine which operators it can choose from to develop the equation.
+This basic version did not work for some reason.
 DetermineOperator();
   
 function DetermineOperator() {
@@ -40,7 +42,7 @@ function DetermineOperator() {
             
 PrintQuestion();
 
-//default settings//
+//default settings for maximum and minimum numbers - can be changed with buttons//
 var minnum = 1;
 var maxnum = 9;
 
