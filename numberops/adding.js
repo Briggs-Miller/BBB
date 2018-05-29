@@ -9,11 +9,14 @@ var score = 0;
 var correct = new Audio('correct.wav');
 var wrong = new Audio('wrong.wav');
 var operator = 2; //determines whether it will be addition or subtraction - 1 is addition, 2 is subtraction.
+document.getElementById("bugging").innerHTML = "Operator = " + operator
+
 
 function PrintQuestion() {
     document.getElementById("first").innerHTML = a;
     document.getElementById("second").innerHTML = b;
     document.getElementById("score").innerHTML = score;
+    document.getElementById("bugging").innerHTML = "Operator = " + operator
     if (operator == 1) {
         document.getElementById("operator").innerHTML = "+";
     }
@@ -70,6 +73,7 @@ function checkAnswer() {
         score +=1;
         document.getElementById("answer").value='';
         document.getElementById("verdict").style.color = "green";
+        
         PrintQuestion();
     } else {
         text = "Sorry, try again!";
