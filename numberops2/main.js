@@ -13,7 +13,7 @@ rand_int = function(min, max) {
 }
 
 var score = 0;
-var c = 0;
+
 document.getElementById("score").innerHTML = score;
 
 check_answer = function () {
@@ -81,6 +81,11 @@ generate_a_question = function() {
         question_type = question_type + 4;
     }
 
+    if (document.getElementById("type-division").checked) {
+        //alert('include division');
+        question_type = question_type + 10;
+    }    
+    
     // basic validation
     if (question_type == 0) {
         alert("Please pick a question type!");
@@ -129,7 +134,39 @@ generate_a_question = function() {
         // addition, subtraction and multiplication
         var signs = ["+", "-", "*"];
     }
-
+    else if (question_type == 10) {
+        sign = "/"
+        var signs = ["/"];
+    }
+        if (question_type == 11) {
+        // addition
+        var signs = ["+","/"];
+    }
+    else if (question_type == 12) {
+       
+        var signs = ["-","/"];
+    }
+    else if (question_type == 13) {
+       
+        var signs = ["+", "-","/"];
+    }
+    else if (question_type == 14) {
+       
+        var signs = ["*","/"];
+    }
+    else if (question_type == 15) {
+        
+        var signs = ["+", "*","/"];
+    }
+    else if (question_type == 16) {
+        
+        var signs = ["-", "*","/"];
+    }
+    else if (question_type == 17) {
+        
+        var signs = ["+", "-", "*","/"];
+    }    
+    
     // the above block will have created an array with one
     // or more signs based on what the setting was.
 
@@ -166,6 +203,18 @@ generate_a_question = function() {
         b = c;
     }
     
+    if (sign == "/" && a%b != 0) {
+        while (a%b !=0) {
+            a = rand_int(num_lower, num_upper);
+            b = rand_int(num_lower, num_upper);
+            c = 0;
+            if (a < b) {
+                c = a;
+                a = b;
+                b = c;
+            }
+        }
+    }
     // ---------------------------------------------------------------- //
 
     // now we have number a, number b and the sign
@@ -182,6 +231,11 @@ generate_a_question = function() {
     if (sign === "*") {
         sign = "×"; // a unicode multiplication sign I copied and pasted in
     }
+    
+    if (sign === "/") {
+        sign = "÷";
+    }
+    
     document.getElementById("sign").innerHTML = sign;
 
     // -- put the focus on the input field so they can start answering questions straight away
