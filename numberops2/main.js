@@ -8,6 +8,29 @@
 // and then store the answer in it at the same time.
 the_answer = null;
 
+
+var CORRECT_CLIPS = 19;
+
+playcorrect = function() {
+    m = rand_int(1, CORRECT_CLIPS)
+    source = "sounds/correct/"+m+".mp3"
+    var myAudio = new Audio(source);
+    myAudio.play();
+}
+
+var WRONG_CLIPS = 8;
+
+playwrong = function() {
+    w = rand_int(1, WRONG_CLIPS)
+    source = "sounds/wrong/"+w+".mp3"
+    var myAudio = new Audio(source);
+    myAudio.play();
+}
+
+
+var correct = new Audio('correct.wav');
+var wrong = new Audio('wrong.wav');
+
 rand_int = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
@@ -20,6 +43,7 @@ check_answer = function () {
     their_answer = document.getElementById("answer").value;
 
     if (their_answer == the_answer) {
+        playcorrect();
         score +=1;
         document.getElementById("score").innerHTML = score;
         document.getElementById("event").style.color = "green";
@@ -28,6 +52,7 @@ check_answer = function () {
     }
     else {
         score -=1;
+        playwrong();
         document.getElementById("event").style.color = "red";
         document.getElementById("event").innerHTML = "Sorry, try again.";
         document.getElementById("score").innerHTML = score;
