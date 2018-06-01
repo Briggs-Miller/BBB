@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+
+        <meta charset="utf-8"><!-- so that our neat little multiplication sign can display properly -->
+
+        <title>Briggs' Brain Builders</title>
+    </head>
+    <body>
+
+        <section id="question" class="container-box">
+            <h1>15</h1>
+            <div>Aim: Make the numbers add to 15</div>
+
+            <div class="clear"></div>
+        </section>
+        <section id="board" class="grid">
+            <table>
+            <tr>
+            <td>
+            <input type="number" class="number" value="" min="1" max="9" id="aa" />
+            <input type="number" class="number" value="" min="1" max="9" id="ab" />
+            <input type="number" class="number" value="" min="1" max="9" id="ac" />
+            </td>
+            </tr>
+            <tr>
+            <td>
+            <input type="number" class="number" value="" min="1" max="9" id="ba" />
+            <input type="number" class="number" value="" min="1" max="9" id="bb" />
+            <input type="number" class="number" value="" min="1" max="9" id="bc" />
+            </td>
+            </tr>
+            <tr>
+            <td>
+            <input type="number" class="number" value="" min="1" max="9" id="ca" />
+            <input type="number" class="number" value="" min="1" max="9" id="cb" />
+            <input type="number" class="number" value="" min="1" max="9" id="cc" />
+            </td>
+            <tr>
+            </table>
+            <tr><input type="button" value="Confirm Turn" id="submit" /></tr>
+            <td>Player One</td>
+        </section>
+        <div id="cheat-answer" class="container-box"></div>
+        <script src="main.js"></script>
+
+    </body>
+</html>
