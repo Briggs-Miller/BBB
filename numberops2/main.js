@@ -218,7 +218,7 @@ generate_a_question = function() {
         num_lower = 1;
         num_upper = 999;
     }
-
+    // reorder the numbers so the largest one is always at the start//
     a = rand_int(num_lower, num_upper);
     b = rand_int(num_lower, num_upper);
     c = 0;
@@ -227,7 +227,7 @@ generate_a_question = function() {
         a = b;
         b = c;
     }
-    
+    //make sure that the division equation answers always result in no remainders//
     if (sign == "/" && a%b != 0) {
         while (a%b !=0) {
             a = rand_int(num_lower, num_upper);
