@@ -10,7 +10,7 @@
     <body>
 
         <section id="question" class="container-box">
-            <h1>Put the following numbers order:</h1>
+            <h1 id="instructions">Put the following numbers order:</h1>
             <div class="number" id="number-1"></div>
 
             <div class="number" id="number-2"></div>
@@ -45,7 +45,16 @@
         
         
         <section id="question-settings" class="container-box">
+            <div id="question-types" class="settings-group">
+                <h2>Question types</h2>
 
+                <input type="checkbox" id="type-up" checked />
+                <label for="type-up">Ascending</label>
+
+                <input type="checkbox" id="type-down" />
+                <label for="type-down">Descending</label>
+
+            </div>
             <div id="question-difficulty" class="settings-group">
                 <h2>Question difficulty</h2>
                 <input type="radio" name="question-difficulty" value="1" id="difficulty-1" checked />
