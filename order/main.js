@@ -1,10 +1,10 @@
 the_answer = [];
 the_numbers = [];
-ans1 = null;
-ans2 = null;
-ans3 = null;
-ans4 = null;
-ans5 = null;
+var ans1 = null;
+var ans2 = null;
+var ans3 = null;
+var ans4 = null;
+var ans5 = null;
 num_lower = 0;
 num_upper = 20;
 updown = [];
@@ -44,14 +44,11 @@ playwrong = function() {
 }
 
 
-var correct = new Audio('correct.wav');
-var wrong = new Audio('wrong.wav');
+
 
 rand_int = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
-
-
 
 document.getElementById("score").innerHTML = score;
 
@@ -150,13 +147,8 @@ generate_random_numbers = function() {
             ans4 = the_answer[1];
             ans5 = the_answer[0];
         }
-        document.getElementById("instructions").innerHTML = "Put the following numbers in DESCENDING order:";
-        
-        
-        
+        document.getElementById("instructions").innerHTML = "Put the following numbers in DESCENDING order:";        
     }
-
-
 }
 
 generate_a_question = function() {
@@ -282,11 +274,11 @@ document.getElementById("submit").onclick = check_answer;
 // -- since this isn't a traditional html form, we can't rely
 // on a normal submit (ask me about this later), so you had the
 // right idea though; check the key presses and look for an "enter" press
-document.getElementById("answer1").onkeydown = answer_keydown;
-document.getElementById("answer2").onkeydown = answer_keydown;
-document.getElementById("answer3").onkeydown = answer_keydown;
-document.getElementById("answer4").onkeydown = answer_keydown;
-document.getElementById("answer5").onkeydown = answer_keydown;
+
+amount_of_inputs = document.querySelectorAll("#question input.answer");
+for (i = 1; i <= amount_of_inputs.length; ++i) {
+    document.getElementById("answer"+i).onkeydown = answer_keydown;
+}
 
 // -- start by generating a question
 generate_a_question();
