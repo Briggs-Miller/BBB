@@ -1,8 +1,11 @@
 //To do
-
-
-//Button to force who starts (attacker/defender/either)
-//Show a list of available numbers (button to show/hide the list)
+//Set variables for Player 1 and Player 2 (maybe drop down boxes to select who they are)
+//New Game - Assign a role to Player 1 and Player 2
+//New Game - Randomises who starts
+//Fix up commentary to include the player rather than the role
+//Fix up colour scheme to show which player's turn it is
+//Have an icon/picture to remind player which role they are playing
+//Make the hide/show settings NOT start a new game
 
 
 
