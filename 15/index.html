@@ -12,7 +12,9 @@
         <section id="Commentary">
             <div id="Commentary"><div class="bold">Game Status:</div><div id="status_update"></div></div>
             <div id="active_player"><div class="bold">Active Player:</div><div id="player_turn"></div></div>
-            
+            <div id="active_role"><div class="bold">Active Role:</div><div id="player_role"></div></div>
+            <div><div class="bold">Player 1:</div><div id="player1is"></div><div class="bold">Role:</div><div id="player1role"></div></div>
+            <div><div class="bold">Player 2:</div><div id="player2is"></div><div class="bold">Role:</div><div id="player2role"></div></div>   
         </section>
         <section id="Main">
             <section id="board" class="grid">
@@ -55,9 +57,25 @@
                 <input type="button" value="Reset Board" id="reset" />
             </div>
             </section>
+            
+            <section>
+            
+            </section>
+            <section>
+                <div id="score" class="score">
+                        <div>
+                            <h4 id="player1name">Player 1 Wins:</h4>
+                            <p id="player1score">10</p>
+                        </div>
+                        <div>
+                            <h4 id="player2name">Player 2 Wins:</h4>
+                            <p id="player2score">10</p>
+                        </div>
+                    </div>
+            </section>
             <section>
                 <div id="settings" >
-                
+                    
                     <div id="question-types" class="settings-group">
                         <h4>Customise</h4>
         
@@ -68,31 +86,24 @@
                         <label for="hide-rules">Show Rules</label>
         
                     </div>
-                    
-                    <div id="AI_HOTSEAT" class="settings-group" >
-                        <h4>Game Type</h4>
-                        <input type="radio" name="AI_HOTSEAT" value="1" id="AI_HOTSEAT-1" checked />
-                        <label for="AI_HOTSEAT-1">PVP (Hotseat)</label>
-        
-                        <input type="radio" name="AI_HOTSEAT" value="2" id="AI_HOTSEAT-2" />
-                        <label for="AI_HOTSEAT-2">AI (EASY)</label>
-
-        
+                    <div id="Players" class="settings-group">
+                        <h4>Select Players:</h4>
+                        Player 1:
+                        <select name="player1" id="Player1">
+                            <option value="RED">Red</option>
+                            <option value="BLUE">Blue</option>
+                            <option value="AI_EASY">AI EASY</option>
+                        </select>
+                        Player 2:
+                        <select name="player2" id="Player2">
+                            <option value="GREEN">Green</option>
+                            <option value="YELLOW">Yellow</option>
+                            <option value="AI_EASY">AI EASY</option>
+                        </select>
+                        <input type="button" value="New Players" id="resetgame" />
+                        
                     </div>
                     
-                    <div id="starting-role" class="settings-group" >
-                        <h4>Starting Role</h4>
-                        <input type="radio" name="starting-role" value="1" id="starting-role-1" checked />
-                        <label for="difficulty-1">Random</label>
-        
-                        <input type="radio" name="starting-role" value="2" id="starting-role-2" />
-                        <label for="difficulty-2">Attacker</label>
-        
-                        <input type="radio" name="starting-role" value="3" id="starting-role-3" />
-                        <label for="difficulty-3">Defender</label>
-        
-                    </div>
-
                 </div>
                 <div id="rules">
                     <div class="container-box">

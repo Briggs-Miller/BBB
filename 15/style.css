@@ -7,7 +7,29 @@ h1 {
     padding-left: 20px;
 }
 
+.GREEN {
+    background: lightgreen;
+}
+
+.yellow {
+    background: yellow;
+}
+
+.RED {
+    background: red;
+}
+
+.BLUE {
+    background: lightblue;
+}
+
+.AI_EASY {
+    background: purple;
+}
+
+
 #Main,
+#score,
 #Commentary div,
 #Turns div {
     display: flex;
@@ -15,6 +37,16 @@ h1 {
     padding-left: 10px;
     padding-bottom: 2px;
 }
+
+#score div{
+    border: 2px solid #000;
+    padding: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    text-align: center;
+    width: 80px;
+}
+
 
 #numbersavailable{
     display: flex;
@@ -36,7 +68,7 @@ h1 {
     padding: 10px;
 }
 
-/* display is none for now */
+
 #settings div {
     border: 2px solid #000;
     margin-right: 10px;
@@ -49,9 +81,6 @@ h1 {
 }
 
 
-#settings div:nth-child(3) {
-    display: none;
-}
 
 .used {
     display: none;
