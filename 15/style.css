@@ -1,17 +1,53 @@
 h1, h2, h3, h4, h5 {
     /* basic reset of heading styles, because we're doing our own margins and paddings */
-    margin: 0 0 10px 0;
+    margin: 0 0 0px 0;    
 }
 
-h1 {
-    padding-left: 20px;
+#container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
+#container section {
+    margin: auto;
+    padding-top: 10px;
+}
+
+.padding-bottom {
+    padding-bottom: 10px;
+}
+
+.grow {
+    width: 300px;
+}
+
+#Commentary {
+    width: 300px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;   
+}
+
+#Commentary .start{
+    align-self: flex-start;
+}
+
+
+table.center,
+#customise-settings div {
+    margin-left:auto; 
+    margin-right:auto;
+  }
+
+
+  
 .GREEN {
     background: lightgreen;
 }
 
-.yellow {
+.YELLOW {
     background: yellow;
 }
 
@@ -23,20 +59,26 @@ h1 {
     background: lightblue;
 }
 
-.AI_EASY {
+.AI_EASY,
+.AI_MED {
     background: purple;
 }
 
 
+
+
 #Main,
 #score,
+#customise-settings,
 #Commentary div,
 #Turns div {
     display: flex;
     flex-wrap: wrap;
-    padding-left: 10px;
+    
     padding-bottom: 2px;
 }
+
+
 
 #score div{
     border: 2px solid #000;
@@ -44,7 +86,7 @@ h1 {
     margin-right: 10px;
     margin-top: 10px;
     text-align: center;
-    width: 80px;
+    
 }
 
 
@@ -68,19 +110,78 @@ h1 {
     padding: 10px;
 }
 
+#Players {
+    border: 2px solid #000;
+    margin: 10px;
+    display: inline-block;
+    text-align: center;
+    
+}
 
-#settings div {
+#rules {
+    display: inline-block;
+}
+
+.padding {
+    padding: 10px;
+}
+
+#customise_players {
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+}
+
+
+#Players div,
+#customise_players div {
+    display: flex;
+    margin: auto;
+}
+
+#new_players input {
+    display: flex;
+    margin: auto;
+}
+
+#Player2_column,
+#Player1_column {
+    flex-direction: column;
+    
+}
+
+#new_players input {
+    font-size: 16px;
+}
+
+#Player2_column div,
+#Player1_column div {
+    padding: 8px;
+}
+
+#Player2_column{
+    border-left: 2px solid #000;
+}
+
+#customise_players option {
+    text-align: center;
+    text-align-last:center;
+}
+
+#settings {
     border: 2px solid #000;
     margin-right: 10px;
     padding: 10px;
+    display: inline-block;
     
+}
+
+#player_number_selector {
+    border-top: 2px solid #000;
 }
 
 .hide div{
     display: none;
 }
-
-
 
 .used {
     display: none;
@@ -101,26 +202,32 @@ h1 {
     margin-left: auto;
 }    
 
-
-@media screen and (max-width: 600px) {
-    #Main,
-    #Commentary div
-    {
-        justify-content: center;
-        text-align: center;
-    }
-    h1 {
-        text-align: center;
-    }
+#Commentary,
+#settings {
+    max-width: 300px;
+    justify-content: center;
+    text-align: center;
+    
 }
+
+
+#Main,
+#Commentary div,
+body div
+{
+    justify-content: center;
+    text-align: center;
+    
+}
+h1 {
+    text-align: center;
+}
+
 
 .bold {
     font-weight: 700;
 }
 
-#Board .grid table{
-    min-width: 200px;
-}
 
 
 

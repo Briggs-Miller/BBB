@@ -6,6 +6,9 @@
 rand_int = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
+rand_list = function(list) {
+    return list[Math.floor(Math.random() * list.length)];
+}
 
 
 var grid = [0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -20,11 +23,13 @@ var Player1role = "";
 var Player2role = "";
 var activeplayer = "";
 var AI_EASY = "";
+var AI_MED = "";
 var Players = [];
 var i = "";
 var Player1Score = 0;
 var Player2Score = 0;
-
+var grid_lines_positions = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+var number_of_players = "";
 
 
 
@@ -59,6 +64,7 @@ function get_available_positions() {
 //AI EASY - picking random position
 function AI_EASY_position() {
     get_available_positions();
+    console.log("Available Positions",available_positions);
     var AI_position = available_positions[Math.floor(Math.random() * available_positions.length)];
     console.log("Getting random position",AI_position)
     return AI_position;
@@ -73,28 +79,241 @@ function AI_number() {
 
 //AI EASY taking a turn
 AI_EASY_TURN = function() {
+    console.log("running AI_EASY_TURN");
     submitted_value = AI_number();
-    console.log("putting AI number into submitted value",submitted_value);
     i = AI_EASY_position();
-    console.log("putting AI position into i",i);
+    console.log("putting random number into random position");
     document.getElementById("grid_"+i).value = +submitted_value;   
     console.log("Printing AI number and position on the board");
 }
+
+
+TEST_COMBINATION = function() {
+    test_number = rand_list(available_numbers);
+    test_position = AI_EASY_position();
+    test_combination = [test_number,test_position];
+    return test_combination;
+}
+
+NO_WINNING_MOVE_SETUP = function() {
+    console.log("using no winning move function")
+    get_available_positions();
+    possible_options = [];
+    bad_options = [];
+    console.log("available numbers are",available_numbers)
+    console.log("these should be empty",possible_options,bad_options);
+    for (i = 0; i < grid_lines_positions.length; ++i) {
+        console.log("checking new winning combination",grid_lines_positions[i]);
+        //iterate through possible winning combinations
+        for (g = 0; g < grid_lines_positions[i].length; ++g) {  
+            //iterate through each box of that combination
+            if (document.getElementById("grid_"+grid_lines_positions[i][g]).disabled != true) {
+                console.log("this box is empty - check if there is a number in one of the other two boxes");
+                winning_array_positions = [0, 1, 2];
+                winning_array_positions.splice(g,1); //splicing the current position out so can be compared with the two other positions
+                a = winning_array_positions[0];
+                b = winning_array_positions[1];
+                if (grid[grid_lines_positions[i][a]] || grid[grid_lines_positions[i][b]] != 0) {
+                    console.log("there is at least one other number in the winning combination",grid_lines_positions[i][a],grid[grid_lines_positions[i][a]],grid_lines_positions[i][b],grid[grid_lines_positions[i][b]])
+                    for (n = 0; n < available_numbers.length; ++n) {
+                        new_available_numbers = available_numbers.slice(0);
+                        new_available_numbers.splice(n,1)
+                        console.log("available numbers", available_numbers, "available numbers is the current number is used",new_available_numbers);
+                        for (j = 0; j < new_available_numbers.length; ++j) {
+                            if ((new_available_numbers[j]+available_numbers[n]+grid[grid_lines_positions[i][a]]+grid[grid_lines_positions[i][b]]) == 15) {
+                                console.log("The testing number",available_numbers[n],"and this other available number",new_available_numbers[j],"and one of the boxes already filled",grid_lines_positions[i][a],"or",grid_lines_positions[i][b],"equals 15");
+                                bad_number = available_numbers[n];
+                                bad_position = grid_lines_positions[i][g];
+                                bad_option = [bad_number,bad_position];
+                                bad_options.push(bad_option);
+                                console.log("add the bad option",bad_option);
+                            }
+                            else if ((new_available_numbers[j]+available_numbers[n]+grid[grid_lines_positions[i][a]]+grid[grid_lines_positions[i][b]]) != 15) {
+                                ok_number = available_numbers[n];
+                                ok_position = grid_lines_positions[i][g];
+                                ok_option = [ok_number,ok_position];
+                                possible_options.push(ok_option);
+                                console.log("add the ok option",ok_option);
+                            }
+                
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    console.log("bad options",bad_options,"possible options",possible_options);
+    s = 0; s < possible_options.length; s++
+    //remove possible options if they are in bad options
+    for (b = 0; b < bad_options.length; b++) {
+        for (s = 0; s < possible_options.length; s++) {
+            if ((bad_options[b][0] == possible_options[s][0]) && (bad_options[b][1] == possible_options[s][1])) {
+                console.log("this option was in the possible options and the bad options",bad_options[b],possible_options[s])
+                possible_options.splice(s,1, 0);
+            }  
+        }
+    }
+    //removing all the zeros
+    s = 0;
+    while  (s < possible_options.length) {
+        var index = possible_options.indexOf(0);
+        if (index > -1) {
+            console.log("removed a zero");
+            possible_options.splice(index, 1);
+        }
+        else {
+            s +=1;
+        }
+    }
+    console.log("possible options minus bad options",possible_options);
+    
+    console.log("length of possible options",possible_options.length);
+    if ((possible_options.length === 1) || (possible_options.length === 0)) {
+        console.log("has detected the the length is either 1 or 0");
+        i = rand_list(available_positions);
+        submitted_value = rand_list(available_numbers);
+        console.log("the value is",submitted_value,"the position is",i);
+        document.getElementById("grid_"+i).value = +submitted_value;   
+        console.log("Printing AI number and position on the board");
+    }
+    else {
+        check_option = rand_list(possible_options);
+        console.log("check_option is",check_option);
+        submitted_value = check_option[0];
+        i = check_option[1];
+        console.log("the value is",submitted_value,"the position is",i);
+        document.getElementById("grid_"+i).value = +submitted_value;   
+        console.log("Printing AI number and position on the board");
+    }   
+}
+
+
+
+AI_MED_TURN = function() {
+    get_available_positions();
+    
+    if (activerole == "ATTACKER") {
+        console.log("USING ATTACKER CODE");
+        if (turn == 1) {
+            AI_EASY_TURN();
+        }
+        else {
+            for (i = 0; i < grid_lines_positions.length; ++i) {
+                grid_lines_positions[i]
+                //iterate through possible winning combinations
+                for (g = 0; g < grid_lines_positions[i].length; ++g) {
+                    //checking to find two numbers in a winning position
+                    winning_array_positions = [0, 1, 2];
+                    winning_array_positions.splice(g,1); //splicing the current position out so can be compared with the two other positions
+                    console.log("Winning Array Positions after splice",winning_array_positions);
+                    a = winning_array_positions[0];
+                    b = winning_array_positions[1];
+                    if ((grid[grid_lines_positions[i][g]] == 0) && (grid[grid_lines_positions[i][a]] != 0) && (grid[grid_lines_positions[i][b]] != 0)) {
+                        console.log("There are two numbers in a winning position - i",i,grid_lines_positions[i]);
+                        for (h = 0; h < available_numbers.length; ++h) {
+                            console.log("Available numbers are",available_numbers);
+                            if (available_numbers[h] + grid[grid_lines_positions[i][a]] + grid[grid_lines_positions[i][b]] == 15) {
+                                submitted_value = available_numbers[h];
+                                i = grid_lines_positions[i][g];
+                                console.log("FOUND A WINNING POSITION!!!");
+                                document.getElementById("grid_"+i).value = +submitted_value;   
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            AI_EASY_TURN();
+        }
+    }
+    
+    else if (activerole == "DEFENDER") {
+        console.log("USING DEFENDER CODE");
+        if (turn == 1) {
+            AI_EASY_TURN();
+        }
+        else {
+            for (i = 0; i < grid_lines_positions.length; ++i) {
+                grid_lines_positions[i]
+                //iterate through possible winning combinations
+                for (g = 0; g < grid_lines_positions[i].length; ++g) {
+                    //checking to find two numbers in a winning position
+                    winning_array_positions = [0, 1, 2];
+                    winning_array_positions.splice(g,1); //splicing the current position out so can be compared with the two other positions
+                    a = winning_array_positions[0];
+                    b = winning_array_positions[1];
+                    if ((grid[grid_lines_positions[i][g]] == 0) && (grid[grid_lines_positions[i][a]] != 0) && (grid[grid_lines_positions[i][b]] != 0)) {
+                        console.log("There are two numbers in a potential winning position in position",grid_lines_positions[i][g],grid_lines_positions[i]);
+                        for (h = 0; h < available_numbers.length; ++h) {
+                            console.log("Available numbers are",available_numbers);
+                            if (available_numbers[h] + grid[grid_lines_positions[i][a]] + grid[grid_lines_positions[i][b]] == 15) {
+                                console.log("with this number it would total 15",available_numbers[h]);
+                                submitted_value = available_numbers[h];
+                                //put it somewhere else
+                                console.log("length of available_positions",available_positions.length);
+                                if (available_positions.length !=1) {
+                                    var index = available_positions.indexOf(grid_lines_positions[i][g]);
+                                    if (index > -1) {
+                                        available_positions.splice(index, 1);
+                                    }
+                                    console.log("new available positions",available_positions);
+                                    i = available_positions[Math.floor(Math.random() * available_positions.length)];
+                                    //need to make sure new location does not create a winning move
+                                    console.log("BLOCKING WINNING POSITION BY USING THAT NUMBER SOMEWHERE ELSE");
+                                    document.getElementById("grid_"+i).value = +submitted_value;   
+                                    return false;
+                                }
+                                else {
+                                    document.getElementById("grid_"+i).value = +submitted_value; 
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            NO_WINNING_MOVE_SETUP();
+        }
+    
+    }
+}
+
 //FORMATTING/VISUAL CODE
 
 //setting up the scoring table
+disable_all_inputs = function() {
+    grid_inputs = document.querySelectorAll("#board table input"); 
+    for (i = 0; i < grid_inputs.length; ++i) {
+        grid_inputs[i].disabled = true;
+        }
+    console.log("Disable All Inputs")
+}
+
+
+clear_all_inputs = function() {
+    grid_inputs = document.querySelectorAll("#board table input"); 
+    for (i = 0; i < grid_inputs.length; ++i) {
+        grid_inputs[i].value = "";
+        grid_inputs[i].disabled = false;
+        }
+    console.log("Clear All Inputs")
+}
 
 function print_scoreboard() {
     document.getElementById("player1score").innerHTML = Player1Score;
     document.getElementById("player2score").innerHTML = Player2Score;
-    document.getElementById("player1name").innerHTML = Player1;
-    document.getElementById("player2name").innerHTML = Player2;
+
 }
 
 //this adds the class 'used' so that the display is none on the used number (makes it invisible)
 function change_board_colour(activeplayer) {    
     var element = document.getElementById("board");
     element.classList.add(activeplayer);
+}
+
+function change_table_colour(player,colour) {
+    var element = document.getElementById(player+"_column");
+    element.classList.add(colour);
 }
 
 function remove_board_colour(activeplayer) {    
@@ -106,6 +325,11 @@ function remove_board_colour(activeplayer) {
 function remove_used_number(b) {
     var element = document.getElementById("used_"+b);
     element.classList.add("used");
+}
+
+function show(this_thing) {
+    var element = document.getElementById("this_thing");
+    element.classList.remove("used");
 }
 
 //colours the winning boxes if the attacker wins
@@ -133,19 +357,49 @@ function show_all_numbers() {
     console.log("Remove winning colour class")
 }
 
+function remove_all_list_options() {
+    var x = document.getElementById("Player2");
+    x.remove(0);
+    x.remove(0);
+    x.remove(0);
+    x.remove(0);
+    x.remove(0);
+}
+
+function add_list_options(ID,TEXT,VALUE) {
+    var x = document.getElementById(ID);
+    var opt = document.createElement("option");
+    opt.text = TEXT;
+    opt.value = VALUE;
+    x.add(opt);
+}
+
+
+load_page = function() {
+    if (number_of_players == 1) {
+        document.getElementById("status_update").innerHTML = "Please select your colour (Player 1) and difficulty (Player 2), then press 'Start New Game'";
+    }
+    else if (number_of_players == 2) {
+        document.getElementById("status_update").innerHTML = "Please select the colour for both players then press 'Start New Game'";
+    }
+    disable_all_inputs();
+    
+}
+
+
+
 //print active player/scores/etc.
-print_player = function(player_turn) {
+print_player = function() {
     if ((turn == 1) && (activerole == "ATTACKER")) {
         document.getElementById("status_update").innerHTML = activeplayer + " has the the first turn.  You cannot use the middle square on your first turn as the ATTACKER.";
     }
     else if ((turn == 1) && (activerole == "DEFENDER")) {
         document.getElementById("status_update").innerHTML = activeplayer + " has the the first turn as the DEFENDER.";
     }
-    document.getElementById("player_turn").innerHTML = activeplayer;
-    document.getElementById("player_role").innerHTML = activerole;
+    
     console.log("change board colour to",activeplayer);
     change_board_colour(activeplayer);
-    print_scoreboard()
+    
     
 }
 
@@ -204,6 +458,9 @@ answer_was_submitted = function() {
     if (activeplayer == "AI_EASY") {   
         AI_EASY_TURN();
     }
+    else if (activeplayer == "AI_MED") {
+        AI_MED_TURN();
+    }
     else {
         GET_HUMAN_INPUT();
     }
@@ -245,11 +502,13 @@ answer_was_submitted = function() {
             console.log("Player1 is", Player1, Player1role)
             document.getElementById("status_update").innerHTML = Player1 + " WINS!!  Reset Board to play again";
             Player1Score += 1;
+            print_scoreboard();
         }
         else if (Player2role == "ATTACKER") {
             console.log("Player2 is", Player2, Player2role)
             document.getElementById("status_update").innerHTML = Player2 + " WINS!!  Reset Board to play again";
             Player2Score += 1;
+            print_scoreboard();
         }   
         disable_all_inputs();
         return false;    
@@ -259,12 +518,14 @@ answer_was_submitted = function() {
         if (Player1role == "DEFENDER") {
             document.getElementById("status_update").innerHTML = Player1 + " WINS!!  Reset Board to play again";
             Player1Score += 1;
+            print_scoreboard();
             return false;
             
         }   
         else if (Player2role == "DEFENDER") {
             document.getElementById("status_update").innerHTML = Player2 + " WINS!!  Reset Board to play again";
             Player2Score += 1;
+            print_scoreboard();
             return false;
             
         }
@@ -308,34 +569,18 @@ answer_was_submitted = function() {
     document.getElementById("grid_4").disabled = false;;
     }
 
-    if (activeplayer == "AI_EASY") {
+    if (activeplayer == "AI_EASY" || activeplayer == "AI_MED") {
         answer_was_submitted();
     }
     
     //update commentary and active player
-    print_player(player_turn);
+    print_player();
     
     
     return true;
 }
 
-disable_all_inputs = function() {
-    grid_inputs = document.querySelectorAll("#board table input"); 
-    for (i = 0; i < grid_inputs.length; ++i) {
-        grid_inputs[i].disabled = true;
-        }
-    console.log("Disable All Inputs")
-}
 
-
-clear_all_inputs = function() {
-    grid_inputs = document.querySelectorAll("#board table input"); 
-    for (i = 0; i < grid_inputs.length; ++i) {
-        grid_inputs[i].value = "";
-        grid_inputs[i].disabled = false;
-        }
-    console.log("Clear All Inputs")
-}
 
 
 submit_turn = function () {
@@ -347,6 +592,7 @@ submit_turn = function () {
 reset_game = function() {
     Player1Score = 0;
     Player2Score = 0;
+    print_scoreboard();
     new_game();
 }
 
@@ -356,11 +602,26 @@ new_game = function () {
     //get player selections
     Player1 = document.getElementById("Player1").value;
     Player2 = document.getElementById("Player2").value;
+    
+    if (Player1 == "NONE" || Player2 == "NONE") {
+        load_page();
+        return false;
+    }
+    
+    if (Player1 === Player2) {
+        document.getElementById("status_update").innerHTML = "Please select different colours for Player 1 and Player 2.";
+        return false;
+    }
+    
+    
+    
+    change_table_colour("Player1",Player1);
+    change_table_colour("Player2",Player2);
+    
     console.log("Player1 is",Player1);
     console.log("Player2 is",Player2);
     Players = [Player1, Player2];
-    document.getElementById("player1is").innerHTML = Player1;
-    document.getElementById("player2is").innerHTML = Player2;
+
     
     //randomise roles
     randomise_roles = binary[Math.floor(Math.random() * binary.length)];
@@ -385,9 +646,9 @@ new_game = function () {
         activeplayer = Player2;
         activerole = Player2role;
     }
-    document.getElementById("player_turn").innerHTML = activeplayer;
-    document.getElementById("player_role").innerHTML = activerole;
-
+    
+    
+    
     removewinningboxes();
     show_all_numbers();
     grid = [0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -395,24 +656,25 @@ new_game = function () {
     turn = 1;
     available_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     available_positions = []
-    print_player(player_turn);
+    print_player();
     clear_all_inputs();  
     console.log("player 1 details",Player1,Player1role);
     console.log("player 2 details",Player2,Player2role);
     console.log("Active player is",activeplayer,activerole);
     console.log("The Players Are",Players);
+    console.log("Active role is",activerole);
     //block out middle box if attacker goes first
     if ((turn==1)&&(activerole=="ATTACKER")) {
         document.getElementById("grid_4").disabled = true;;
     }
     
-    if (activeplayer == "AI_EASY") {
+    if (activeplayer == "AI_EASY" || activeplayer == "AI_MED") {
         answer_was_submitted();
     }
 }
 
 
-new_game();
+
 
 
 //INTERFACE CODE - mouse, keyboard and buttons
@@ -440,7 +702,7 @@ setting_was_changed = function() {
     // one of the settings were changed.
     console.log('the settings were changed');
         //show/hide things
-    question_type = 0; //
+    question_type = 0; 
     if (document.getElementById("show-numbers").checked) {
         
         question_type = question_type + 1;
@@ -478,18 +740,49 @@ setting_was_changed = function() {
     }
 }
 
+function setup_game() {
+    number_of_players = 0;
+    difficulty_radiobuttons = document.getElementsByName("player_number");
+    for (var i = 0, length = difficulty_radiobuttons.length; i < length; i++) {
+        if (difficulty_radiobuttons[i].checked) {
+            number_of_players = difficulty_radiobuttons[i].value;
+            break; // no sense continuing the loop
+        }
+    }
+    
+    if (number_of_players == 1) {
+        remove_all_list_options();
+        add_list_options("Player2", "Please Select","NONE");
+        add_list_options("Player2","Easy", "AI_EASY")
+        add_list_options("Player2","Medium","AI_MED")
+    }
+    
+    else if (number_of_players == 2) {
+        remove_all_list_options();
+        add_list_options("Player2", "Please Select","NONE");
+        add_list_options("Player2","Red", "RED");
+        add_list_options("Player2","Blue", "BLUE")
+        add_list_options("Player2","Green", "GREEN")
+        add_list_options("Player2","Yellow", "YELLOW")
+    }
+    load_page();
+}
+
 setting_was_changed();
+setup_game();
 // Any time a setting is changed, call the setting_was_changed() function.
 // -- get all the input elements under the #question-settings element
 settings_inputs = document.querySelectorAll("#settings input"); // select all "input" elements under the element with the id "settings"
 for (i = 0; i < settings_inputs.length; ++i) {
-    // The next line attaches the "setting_was_changed" function on to the "onchange"
-    // event for each of the "input" elements under the #question-settings element
-    // ie. each time those input fields are changed, the setting_was_changed() function will be called.
+    
     settings_inputs[i].onchange = setting_was_changed;
 }
 
-
+settings_inputs = document.querySelectorAll("#setup input"); // select all "input" elements under the element with the id "settings"
+for (i = 0; i < settings_inputs.length; ++i) {
+    
+    settings_inputs[i].onchange = setup_game;
+}
 
 //run tests to see if working
 run_tests = function() {
@@ -551,3 +844,4 @@ run_tests = function() {
     }   
     
 }    
+load_page();
